@@ -1,2 +1,2 @@
 # Plataforma Gerenciamento do Conhecimento - PGC
-Esse projeto e destinado um trabalho do curso de desenvolvimento de sistemas. Das matérias Front-end 2, Backend, Desenvolvimento de Software, Fundamentos de Segurança Software. Desenvolvimento de Aplicativos. O sistema é um
+Esse projeto e destinado um trabalho do curso de desenvolvimento de sistemas. No qual, cada participante do grupo ficou a disposição de cuidar de uma determinada matéria dentro do sistema sendo elas: Front-end 2, Backend, Desenvolvimento de Software, Fundamentos de Segurança Software e Desenvolvimento de Aplicativos. O sistema é um que auxiliara o usuário a estudar por meio de várias ferramentas ou técnicas de estudo.
