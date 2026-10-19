@@ -1,0 +1,41 @@
+# Roda os testes e o build a cada envio para o GitHub e em cada pull request.
+# Verde: pode juntar. Vermelho: algo quebrou, e o log diz onde.
+# Enquanto a equipe ainda está subindo as partes do PGC (cada um sobe a sua), falta código para rodar os testes:
+# nesse caso o check passa com o aviso "Ainda faltam partes", e os testes começam a rodar quando todas chegarem.
+name: testes e build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conferir se todas as partes chegaram
+        id: partes
+        run: |
+          falta=""
+          for item in package.json package-lock.json nuxt.config.js app/app.vue app/pages server/api shared/regras supabase/migrations; do
+            [ -e "$item" ] || falta="$falta $item"
+          done
+          if [ -n "$falta" ]; then
+            echo "Ainda faltam partes do PGC:$falta"
+            echo "Os testes vão rodar quando todas as partes estiverem na main."
+            echo "completo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "completo=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.partes.outputs.completo == 'true'
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+        if: steps.partes.outputs.completo == 'true'
+      - run: npm test
+        if: steps.partes.outputs.completo == 'true'
+      - run: npm run build
+        if: steps.partes.outputs.completo == 'true'
