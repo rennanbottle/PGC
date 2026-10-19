@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<body style="margin:0;padding:0;background:#f0eee6;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f0eee6;padding:32px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#faf9f5;border:1px solid #ddd6c8;border-radius:14px;">
+          <tr>
+            <td style="padding:32px 28px;font-family:'Source Sans 3',Segoe UI,Arial,sans-serif;color:#141413;font-size:16px;line-height:1.55;">
+              <p style="margin:0 0 24px;font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:bold;letter-spacing:-0.02em;">PGC</p>
+              <h1 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:26px;font-weight:normal;line-height:1.2;">Confirme seu e-mail</h1>
+              <p style="margin:0 0 24px;color:#5e5d59;">Falta um passo para ativar sua conta no PGC. O link vale por 1 hora e só pode ser usado uma vez.</p>
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-radius:10px;background:#1f1e1c;">
+                    <a href="{{ .SiteURL }}/auth/confirmar?token_hash={{ .TokenHash }}&amp;type=email" style="display:inline-block;padding:14px 24px;font-weight:bold;color:#faf9f5;text-decoration:none;border-radius:10px;">Confirmar e entrar</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:24px 0 0;font-size:14px;color:#5e5d59;">Se você não criou uma conta no PGC, ignore este e-mail. Nada acontece sem o clique.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

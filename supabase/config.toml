@@ -1,0 +1,39 @@
+# Supabase CLI 2.x: o banco LOCAL do PGC, que roda no Docker do seu computador. Guia: docs/BANCO-LOCAL.md.
+# Só vale para "npm run banco:iniciar" e companhia. O projeto na nuvem não lê este arquivo.
+# As migrações saem de supabase/migrations (0001_x.sql ... na ordem) e os dados de demonstração de supabase/seed.sql.
+project_id = "pgc"
+
+[api]
+port = 54321
+
+[db]
+port = 54322
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+# Painel para ver e editar as tabelas: http://127.0.0.1:54323
+[studio]
+port = 54323
+
+# Caixa de entrada de mentira: os e-mails do login local (como "recuperar senha") chegam em http://127.0.0.1:54324
+[inbucket]
+port = 54324
+
+[auth]
+site_url = "http://localhost:3000"
+# O último endereço é o do GitHub Codespaces (cada colega da equipe abre o PGC por um endereço *.app.github.dev).
+additional_redirect_urls = ["http://localhost:3000/**", "http://127.0.0.1:3000/**", "https://*.app.github.dev/**"]
+enable_signup = true
+# O mesmo mínimo do app (SENHA_MINIMA em shared/regras/senha.js).
+minimum_password_length = 10
+
+[auth.email]
+enable_signup = true
+# No banco local a conta nova já entra, sem confirmar o e-mail.
+enable_confirmations = false
+
+[analytics]
+enabled = false
