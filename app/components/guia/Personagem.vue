@@ -22,35 +22,3 @@ const estilo = computed(() => ({
 <template>
   <span :key="humor" class="guia-personagem" :class="!semFundo && 'com-fundo'" :style="estilo" aria-hidden="true" />
 </template>
-
-<style scoped>
-/* Na camada "components": as classes de quem usa (hidden, sm:block...) continuam valendo por cima. */
-@layer components {
-  .guia-personagem {
-    display: inline-block;
-    flex-shrink: 0;
-    background-repeat: no-repeat;
-    background-size: 400% 300%;
-    animation: guia-troca 0.28s var(--ease-saida) both;
-  }
-  /* Fundo na cor da paleta, para o recorte do personagem não ficar solto na página. */
-  .com-fundo {
-    border-radius: 28%;
-    background-color: var(--acento-suave);
-  }
-}
-@keyframes guia-troca {
-  from {
-    opacity: 0.55;
-    transform: scale(0.94);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .guia-personagem {
-    animation: none;
-  }
-}
-:global(:root.menos-movimento) .guia-personagem {
-  animation: none;
-}
-</style>

@@ -1949,6 +1949,92 @@
     position: relative;
     z-index: 1;
   }
+
+  /*
+    Estilos de componente que precisam ficar na camada "components" moram aqui, nunca num <style scoped> com
+    @layer dentro. No site publicado, o Nuxt coloca o <style> do componente ANTES deste arquivo; o navegador então
+    cria a camada "components" antes da "base", e a "base" (o reset do Tailwind) passa por cima de tudo: campos sem
+    borda, botões sem fundo. Foi o que aconteceu na primeira publicação na Vercel (21/10/2026).
+  */
+
+  /* Guia (app/components/guia/Personagem.vue). As classes de quem usa (hidden, sm:block...) continuam valendo. */
+  .guia-personagem {
+    display: inline-block;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    background-size: 400% 300%;
+    animation: guia-troca 0.28s var(--ease-saida) both;
+  }
+  /* Fundo na cor da paleta, para o recorte do personagem não ficar solto na página. */
+  .guia-personagem.com-fundo {
+    border-radius: 28%;
+    background-color: var(--acento-suave);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .guia-personagem {
+      animation: none;
+    }
+  }
+  :root.menos-movimento .guia-personagem {
+    animation: none;
+  }
+
+  /* Cartão-resposta da prova (app/components/prova/CartaoResposta.vue). */
+  .linha-cartao {
+    display: flex;
+    width: 100%;
+    min-height: 34px;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px 4px 8px;
+    border: 0;
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+    background: transparent;
+    color: var(--tinta);
+    cursor: pointer;
+    text-align: left;
+  }
+  .linha-cartao:hover {
+    background: var(--folha-2);
+  }
+  .linha-cartao.atual {
+    border-left-color: var(--acento);
+    background: var(--acento-suave);
+  }
+  .cartao-resposta li {
+    break-inside: avoid;
+    border-bottom: 1px solid var(--borda);
+  }
+  /* Bolinha oval de caneta, como no cartão do ENEM. */
+  .cartao-resposta .bolinha {
+    display: grid;
+    width: 22px;
+    height: 17px;
+    place-items: center;
+    border: 1.5px solid var(--borda-forte);
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--texto-2);
+  }
+  .cartao-resposta .bolinha.cheia {
+    border-color: var(--tinta);
+    background: var(--tinta);
+    color: var(--folha);
+  }
+  .cartao-resposta .bolinha.certa {
+    outline: 2px solid var(--ok);
+    outline-offset: 1.5px;
+  }
+}
+
+@keyframes guia-troca {
+  from {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
 }
 
 /* ================= Animações ================= */
