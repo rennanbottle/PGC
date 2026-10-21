@@ -1,0 +1,2708 @@
+/*
+  Identidade visual do PGC (versão 2, 08/10/2026).
+  Este é o ÚNICO lugar com cores e fontes do projeto: as telas usam nomes (bg-folha, text-tinta, border-borda...),
+  nunca códigos de cor. Guia completo em docs/DESIGN.md.
+
+  Ideia: quadro branco no tema claro e lousa no escuro. A tinta das ações é o "azul caneta"; cada matéria tem a cor de
+  uma caneta colorida. Contraste conferido (WCAG AA): texto principal acima de 15:1, texto secundário acima de 7:1,
+  texto apagado acima de 4,9:1, azul das ações acima de 4,7:1, borda dos campos acima de 3:1, nos dois temas.
+
+  Nomes antigos continuam valendo (mesa, folha, tinta, texto-2, borda, campo, acento...): só mudaram de valor.
+    mesa = fundo da página     folha = superfície dos cartões     folha-2 e folha-3 = preenchimentos
+    tinta = texto principal    texto-2 = texto secundário         texto-3 = texto apagado
+    acento = azul das ações (links, foco, item ativo, botão principal)
+    erro, ok, aviso = situações (sempre com texto ou ícone junto, nunca só a cor)
+    energia = laranja de dias seguidos e pontos
+*/
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/onest.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+/* O módulo de tema coloca .light ou .dark no <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --mesa: #f3f5fa;
+  --ponto: #d9dfeb;
+  --folha: #ffffff;
+  --folha-2: #f2f4f9;
+  --folha-3: #e6eaf3;
+  --tinta: #0d1326;
+  --texto-2: #48526c;
+  --texto-3: #5f6984;
+  --borda: #e2e6ef;
+  --borda-forte: #cdd3e0;
+  --borda-campo: #8790a8;
+  --campo: #ffffff;
+
+  --acento: #2f5bff;
+  --acento-forte: #1c3fd6;
+  --acento-suave: #eaf0ff;
+  --acento-anel: rgb(47 91 255 / 0.22);
+  --sobre-acento: #ffffff;
+  /* Segunda cor da paleta (as mesclas: barras de progresso) e as 4 cores da logo. */
+  --acento-2: #0bb3c0;
+  --logo-1: #0336b4;
+  --logo-2: #0184f2;
+  --logo-3: #0bbfc4;
+  --logo-4: #5be976;
+
+  --energia: #ff7a1a;
+  --energia-texto: #a94c05;
+  --energia-suave: #fff1e6;
+  --ok: #0b7a44;
+  --ok-vivo: #12a35a;
+  --ok-suave: #e3f6eb;
+  --erro: #c4262a;
+  --erro-vivo: #e5383b;
+  --erro-forte: #a31d21;
+  --erro-suave: #fdecec;
+  --erro-anel: rgb(229 56 59 / 0.2);
+  --aviso: #946000;
+  --aviso-vivo: #f5a300;
+  --aviso-suave: #fff4d9;
+
+  /* Botão principal: o mesmo azul das ações. */
+  --botao: var(--acento);
+  --sobre-botao: var(--sobre-acento);
+
+  /* Cor de cada matéria (texto em cima: --sobre-marca). Sempre aparecem junto do nome da matéria. */
+  --marca-azul: #3366ff;
+  --marca-verde: #12a35a;
+  --marca-laranja: #e8690b;
+  --marca-roxo: #8b5cf6;
+  --marca-vermelho: #e5383b;
+  --marca-amarelo: #bf8a00;
+  --marca-rosa: #e0418a;
+  --marca-cinza: #6b7590;
+  --sobre-marca: #ffffff;
+  --estado-meio: #bf8a00;
+
+  /* Sombras só no que fica acima da página: menus, janelas, dicas, avisos. */
+  --sombra: rgb(16 24 48 / 0.16);
+  --sombra-menu: 0 1px 2px rgb(16 24 48 / 0.06), 0 12px 32px -8px rgb(16 24 48 / 0.18);
+  --sombra-janela: 0 2px 6px rgb(16 24 48 / 0.06), 0 32px 80px -24px rgb(16 24 48 / 0.35);
+  --fundo-janela: rgb(10 14 26 / 0.45);
+
+  --codigo-fundo: #0f1527;
+  --codigo-texto: #e3e8f7;
+
+  --marca-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  --marca-menos: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+
+  --ease-saida: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+  color-scheme: light;
+}
+
+:root.dark {
+  --mesa: #0a0e1a;
+  --ponto: #182033;
+  --folha: #111726;
+  --folha-2: #171f31;
+  --folha-3: #1f293f;
+  --tinta: #eef2ff;
+  --texto-2: #a8b2cc;
+  --texto-3: #8590ad;
+  --borda: #212a3f;
+  --borda-forte: #2b3651;
+  --borda-campo: #5c6886;
+  --campo: #0e1422;
+
+  --acento: #7d9bff;
+  --acento-forte: #4f6ef0;
+  --acento-suave: #18224a;
+  --acento-anel: rgb(125 155 255 / 0.28);
+  --sobre-acento: #0a0e1a;
+  --acento-2: #3fd6d0;
+  --logo-1: #2a55e0;
+  --logo-2: #1a90ff;
+  --logo-3: #22cfd0;
+  --logo-4: #6ef08a;
+
+  --energia: #ff9346;
+  --energia-texto: #ffad70;
+  --energia-suave: #2c1c10;
+  --ok: #3dd68c;
+  --ok-vivo: #3dd68c;
+  --ok-suave: #0f2a1f;
+  --erro: #ff8587;
+  --erro-vivo: #ff6b6e;
+  --erro-forte: #d94e51;
+  --erro-suave: #2e1416;
+  --erro-anel: rgb(255 107 110 / 0.24);
+  --aviso: #ffc24b;
+  --aviso-vivo: #ffc24b;
+  --aviso-suave: #2e2310;
+
+  --marca-azul: #6c8bff;
+  --marca-verde: #2fbf74;
+  --marca-laranja: #ee8238;
+  --marca-roxo: #a08af5;
+  --marca-vermelho: #ee6668;
+  --marca-amarelo: #d9a732;
+  --marca-rosa: #e86fa4;
+  --marca-cinza: #8c95ac;
+  --sobre-marca: #0a0e1a;
+  --estado-meio: #d9a732;
+
+  --sombra: rgb(0 0 0 / 0.5);
+  --sombra-menu: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -8px rgb(0 0 0 / 0.6);
+  --sombra-janela: 0 2px 6px rgb(0 0 0 / 0.3), 0 40px 90px -20px rgb(0 0 0 / 0.75);
+  --fundo-janela: rgb(3 5 12 / 0.62);
+
+  --codigo-fundo: #080c17;
+  --codigo-texto: #e3e8f7;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-mesa: var(--mesa);
+  --color-folha: var(--folha);
+  --color-folha-2: var(--folha-2);
+  --color-folha-3: var(--folha-3);
+  --color-tinta: var(--tinta);
+  --color-texto-2: var(--texto-2);
+  --color-texto-3: var(--texto-3);
+  --color-borda: var(--borda);
+  --color-borda-forte: var(--borda-forte);
+  --color-borda-campo: var(--borda-campo);
+  --color-campo: var(--campo);
+  --color-acento: var(--acento);
+  --color-acento-forte: var(--acento-forte);
+  --color-acento-suave: var(--acento-suave);
+  --color-sobre-acento: var(--sobre-acento);
+  --color-botao: var(--botao);
+  --color-sobre-botao: var(--sobre-botao);
+  --color-energia: var(--energia);
+  --color-energia-texto: var(--energia-texto);
+  --color-energia-suave: var(--energia-suave);
+  --color-ok: var(--ok);
+  --color-ok-vivo: var(--ok-vivo);
+  --color-ok-suave: var(--ok-suave);
+  --color-erro: var(--erro);
+  --color-erro-vivo: var(--erro-vivo);
+  --color-erro-suave: var(--erro-suave);
+  --color-aviso: var(--aviso);
+  --color-aviso-vivo: var(--aviso-vivo);
+  --color-aviso-suave: var(--aviso-suave);
+  --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-titulo: 'Bricolage Grotesque', 'Onest', system-ui, sans-serif;
+  /* "font-serif" ficou de nome antigo: hoje aponta para a fonte dos títulos. Use font-titulo no código novo. */
+  --font-serif: 'Bricolage Grotesque', 'Onest', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+@layer base {
+  html {
+    background-color: var(--mesa);
+    color: var(--tinta);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scrollbar-color: var(--borda-forte) transparent;
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    /* Pontos de papel quadriculado, bem leves, só no fundo (nunca nos cartões). */
+    background-color: var(--mesa);
+    background-image: radial-gradient(var(--ponto) 1px, transparent 1.3px);
+    background-size: 24px 24px;
+    background-position: -11px -11px;
+  }
+  h1,
+  h2,
+  h3 {
+    font-optical-sizing: auto;
+  }
+  ::selection {
+    background: var(--acento-suave);
+    color: var(--tinta);
+  }
+  :focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+  /* Foco colocado pelo código (troca de tela, janelas): sem contorno. */
+  [tabindex='-1']:focus,
+  [tabindex='-1']:focus-visible {
+    outline: none;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: var(--borda-forte);
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  code,
+  kbd,
+  pre {
+    font-family: var(--font-mono);
+  }
+  sup,
+  sub {
+    line-height: 0;
+  }
+}
+
+@layer components {
+  /* ================= Texto ================= */
+  .titulo-pagina {
+    margin: 0;
+    font-family: var(--font-titulo);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+  @media (min-width: 640px) {
+    .titulo-pagina {
+      font-size: 42px;
+    }
+  }
+  /* Entra subindo de trás de uma máscara, uma vez. */
+  .titulo-pagina > .revela-linha {
+    display: inline-block;
+    animation: revela-titulo 0.75s var(--ease-saida) backwards;
+  }
+  .titulo-secao {
+    margin: 0;
+    font-family: var(--font-titulo);
+    font-size: 21px;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+  }
+  .titulo-cartao {
+    margin: 0;
+    font-family: var(--font-titulo);
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+  }
+  .numero-grande {
+    font-family: var(--font-titulo);
+    font-size: 44px;
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+  .numero-medio {
+    font-family: var(--font-titulo);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+  /* 12/20: o número principal forte e o total apagado. */
+  .fracao {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .fracao .fracao-total {
+    color: var(--texto-3);
+    font-weight: 500;
+  }
+  .descricao-pagina {
+    margin: 10px 0 0;
+    max-width: 620px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--texto-2);
+    animation: aparece 0.6s ease 0.2s backwards;
+  }
+  .rotulo {
+    display: block;
+    margin: 0 0 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--texto-2);
+  }
+  .ajuda {
+    margin: 6px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--texto-3);
+  }
+  .erro-campo {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 7px 0 0;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--erro);
+    animation: aparece 0.25s ease backwards;
+  }
+  .link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 600;
+    color: var(--acento);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: color-mix(in oklab, var(--acento) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s;
+  }
+  .link:hover {
+    text-decoration-color: var(--acento);
+  }
+  /* Ação secundária em texto, sem chamar atenção (ex.: "Questão com problema" na correção). */
+  .link-discreto {
+    padding: 2px 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 600;
+    color: var(--texto-2);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+  .link-discreto:hover {
+    color: var(--tinta);
+    text-decoration-color: currentColor;
+  }
+  .volta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px 6px 6px;
+    margin-left: -6px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--texto-2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s;
+  }
+  .volta:hover {
+    color: var(--tinta);
+    background: var(--folha-2);
+  }
+  .volta:hover svg {
+    transform: translateX(-3px);
+  }
+  .volta svg {
+    transition: transform 0.2s var(--ease-saida);
+  }
+
+  /* ================= Superfícies ================= */
+  .cartao {
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    background: var(--folha);
+    padding: 22px;
+  }
+  .cartao-p {
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    background: var(--folha);
+    padding: 16px;
+  }
+  /* Cartão que chama para uma ação: fundo levemente azul. */
+  .cartao-destaque {
+    border: 1px solid color-mix(in oklab, var(--acento) 28%, var(--borda));
+    border-radius: 20px;
+    background: var(--acento-suave);
+    padding: 22px;
+  }
+  .painel {
+    border-radius: 14px;
+    background: var(--folha-2);
+    padding: 14px 16px;
+  }
+  .divisoria {
+    height: 1px;
+    border: 0;
+    margin: 0;
+    background: var(--borda);
+  }
+  /* Nome antigo da folha com pautas: hoje é só a superfície. */
+  .folha {
+    position: relative;
+    background-color: var(--folha);
+  }
+  .margem,
+  .marca-texto,
+  .folha-de-tras {
+    display: none;
+  }
+
+  /* ================= Botões ================= */
+  /* Principal: azul, com a borda de baixo que afunda ao apertar (como uma tecla). */
+  .botao {
+    --b-fundo: var(--botao);
+    --b-borda: var(--acento-forte);
+    --b-texto: var(--sobre-botao);
+    --b-alt: 3px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--b-fundo);
+    color: var(--b-texto);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 var(--b-alt) 0 var(--b-borda);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.2s, background-color 0.25s;
+  }
+  .botao:hover {
+    filter: brightness(1.07) saturate(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 calc(var(--b-alt) + 1px) 0 var(--b-borda);
+  }
+  .botao:active {
+    transform: translateY(calc(var(--b-alt) - 1px));
+    box-shadow: 0 1px 0 var(--b-borda);
+    transition-duration: 0.05s;
+  }
+  .botao:disabled,
+  .botao[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.3);
+    transform: none;
+    box-shadow: 0 var(--b-alt) 0 var(--b-borda);
+  }
+  .botao[aria-busy='true'] {
+    cursor: progress;
+    opacity: 0.85;
+  }
+  .botao svg {
+    flex-shrink: 0;
+  }
+  .botao-secundario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--borda-forte);
+    border-radius: 12px;
+    background: var(--folha);
+    color: var(--tinta);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 0 var(--borda-forte);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s, border-color 0.15s;
+  }
+  .botao-secundario:hover {
+    background: var(--folha-2);
+    border-color: color-mix(in oklab, var(--borda-forte), var(--tinta) 18%);
+  }
+  .botao-secundario:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 var(--borda-forte);
+    transition-duration: 0.05s;
+  }
+  .botao-secundario:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .botao-fantasma {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: var(--texto-2);
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, transform 0.12s;
+  }
+  .botao-fantasma:hover {
+    background: var(--folha-2);
+    color: var(--tinta);
+  }
+  .botao-fantasma:active {
+    transform: scale(0.97);
+  }
+  .botao-fantasma:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .botao-perigo {
+    --b-fundo: var(--erro-vivo);
+    --b-borda: var(--erro-forte);
+    --b-texto: #ffffff;
+  }
+  :root.dark .botao-perigo {
+    --b-texto: #0a0e1a;
+  }
+  /* Ações que usam IA: tinta escura e estrelinhas que piscam ao passar o mouse. */
+  .botao-ia {
+    --b-fundo: var(--tinta);
+    --b-borda: color-mix(in oklab, var(--tinta) 70%, var(--acento));
+    --b-texto: var(--folha);
+  }
+  .botao-ia .estrela {
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .botao-ia:hover .estrela {
+    animation: estrela 0.9s var(--ease-mola) both;
+  }
+  .botao-ia:hover .estrela:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .botao-ia:hover .estrela:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+  .botao-p {
+    height: 36px;
+    padding: 0 13px;
+    border-radius: 10px;
+    font-size: 14px;
+    gap: 6px;
+    --b-alt: 2px;
+  }
+  .botao-g {
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+  /* Botão só com ícone (sempre com aria-label). */
+  .botao-icone {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--texto-2);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, transform 0.12s;
+  }
+  .botao-icone:hover {
+    background: var(--folha-2);
+    color: var(--tinta);
+  }
+  .botao-icone:active {
+    transform: scale(0.92);
+  }
+  .botao-icone:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .botao-icone.pequeno {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+  /* Lixeira: a tampa abre quando o botão em volta recebe o mouse ou o foco. */
+  .lixeira {
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .lixeira-tampa {
+    transform-origin: 3px 6px;
+    transition: transform 0.3s var(--ease-mola);
+  }
+  :is(button, a):is(:hover, :focus-visible) .lixeira-tampa {
+    transform: rotate(-24deg) translateY(-0.5px);
+  }
+  .botao-lixeira:hover {
+    background: var(--erro-suave);
+    color: var(--erro);
+  }
+  /* Sair: círculo que se abre mostrando o texto. */
+  .botao-sair {
+    display: inline-flex;
+    align-items: center;
+    max-width: 44px;
+    height: 44px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 999px;
+    background: var(--erro-suave);
+    color: var(--erro);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: max-width 0.4s var(--ease-saida), background-color 0.2s, color 0.2s;
+  }
+  .botao-sair-icone {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+  }
+  .botao-sair-texto {
+    padding-right: 18px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.2s, transform 0.3s var(--ease-saida);
+  }
+  .botao-sair:hover,
+  .botao-sair:focus-visible {
+    max-width: 320px;
+    background: var(--erro-vivo);
+    color: #ffffff;
+  }
+  :root.dark .botao-sair:hover,
+  :root.dark .botao-sair:focus-visible {
+    color: #0a0e1a;
+  }
+  .botao-sair:hover .botao-sair-texto,
+  .botao-sair:focus-visible .botao-sair-texto {
+    opacity: 1;
+    transform: none;
+  }
+  .botao-sair:hover svg {
+    animation: sai-seta 0.5s var(--ease-saida);
+  }
+  @media (hover: none) {
+    .botao-sair {
+      max-width: 320px;
+    }
+    .botao-sair-texto {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* Adicionar: o "+" gira um quarto de volta. */
+  .botao-adicionar .mais {
+    transition: transform 0.4s var(--ease-mola);
+  }
+  .botao-adicionar:hover .mais,
+  .botao-adicionar:focus-visible .mais {
+    transform: rotate(90deg);
+  }
+  .botao-adicionar-redondo {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--acento);
+    color: var(--sobre-acento);
+    box-shadow: 0 3px 0 var(--acento-forte);
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, filter 0.2s;
+  }
+  .botao-adicionar-redondo:hover {
+    filter: brightness(1.07);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 0 var(--acento-forte);
+  }
+  .botao-adicionar-redondo:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--acento-forte);
+  }
+  /* Indicador de carregamento dentro de botões e listas. */
+  .rodando {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: gira 0.7s linear infinite;
+  }
+
+  /* ================= Campos ================= */
+  .campo {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid var(--borda-campo);
+    border-radius: 12px;
+    background: var(--campo);
+    color: var(--tinta);
+    font: inherit;
+    font-size: 15.5px;
+    transition: border-color 0.15s, box-shadow 0.2s, background-color 0.25s;
+  }
+  .campo:hover {
+    border-color: color-mix(in oklab, var(--borda-campo), var(--tinta) 35%);
+  }
+  .campo:focus {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 4px var(--acento-anel);
+  }
+  .campo[aria-invalid='true'] {
+    border-color: var(--erro-vivo);
+    box-shadow: 0 0 0 4px var(--erro-anel);
+  }
+  .campo:disabled,
+  .campo[readonly] {
+    background: var(--folha-2);
+    color: var(--texto-2);
+    cursor: default;
+  }
+  textarea.campo {
+    height: auto;
+    min-height: 104px;
+    padding: 12px 14px;
+    line-height: 1.55;
+    resize: vertical;
+  }
+  .campo-p {
+    height: 38px;
+    border-radius: 10px;
+    font-size: 14.5px;
+  }
+  @media (max-width: 639px) {
+    .campo {
+      font-size: 16px;
+    }
+  }
+  /* Campo com ícone dentro (busca): <label class="campo-icone"><svg/><input class="campo"/></label> */
+  .campo-icone {
+    position: relative;
+    display: block;
+  }
+  .campo-icone > svg {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    color: var(--texto-3);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .campo-icone > .campo {
+    padding-left: 42px;
+  }
+  /* Balança de leve quando a pessoa tenta enviar com erro. */
+  .treme {
+    animation: treme 0.4s ease both;
+  }
+
+  /* ================= Caixas de marcar, bolinhas e alternadores ================= */
+  /* <input type="checkbox" class="marcar"> */
+  input.marcar {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border: 1.5px solid var(--borda-campo);
+    border-radius: 6px;
+    background: var(--campo);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: background-color 0.15s, border-color 0.15s, transform 0.15s;
+  }
+  input.marcar::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--sobre-acento);
+    -webkit-mask: var(--marca-check) center / contain no-repeat;
+    mask: var(--marca-check) center / contain no-repeat;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.28s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  input.marcar:hover {
+    border-color: var(--acento);
+  }
+  input.marcar:checked,
+  input.marcar:indeterminate {
+    border-color: var(--acento);
+    background: var(--acento);
+    animation: pop 0.32s var(--ease-mola);
+  }
+  input.marcar:checked::after {
+    clip-path: inset(0 0 0 0);
+  }
+  input.marcar:indeterminate::after {
+    -webkit-mask-image: var(--marca-menos);
+    mask-image: var(--marca-menos);
+    clip-path: inset(0 0 0 0);
+  }
+  input.marcar:active {
+    transform: scale(0.88);
+  }
+  input.marcar:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  /* <input type="radio" class="escolher"> */
+  input.escolher {
+    display: inline-grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border: 1.5px solid var(--borda-campo);
+    border-radius: 50%;
+    background: var(--campo);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.15s;
+  }
+  input.escolher::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--acento);
+    transform: scale(0);
+    transition: transform 0.3s var(--ease-mola);
+  }
+  input.escolher:hover {
+    border-color: var(--acento);
+  }
+  input.escolher:checked {
+    border-color: var(--acento);
+  }
+  input.escolher:checked::after {
+    transform: scale(1);
+  }
+  input.escolher:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  /* <input type="checkbox" role="switch" class="alternador"> */
+  input.alternador {
+    position: relative;
+    flex-shrink: 0;
+    width: 44px;
+    height: 26px;
+    margin: 0;
+    border: 1px solid var(--borda-forte);
+    border-radius: 999px;
+    background: var(--folha-3);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: background-color 0.25s, border-color 0.25s;
+  }
+  input.alternador::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+    transition: transform 0.35s var(--ease-mola), width 0.2s ease;
+  }
+  input.alternador:active::before {
+    width: 25px;
+  }
+  input.alternador:checked {
+    border-color: var(--acento);
+    background: var(--acento);
+  }
+  input.alternador:checked::before {
+    transform: translateX(18px);
+  }
+  input.alternador:checked:active::before {
+    transform: translateX(13px);
+  }
+  input.alternador:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* Linha clicável com caixa ou bolinha, nome e uma linha de descrição. */
+  .linha-opcao {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    border-radius: 12px;
+    color: var(--tinta);
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  .linha-opcao:hover {
+    background: var(--folha-2);
+  }
+  .linha-opcao:has(input:checked) {
+    background: var(--acento-suave);
+  }
+  .linha-opcao:has(input:focus-visible) {
+    outline: 2px solid var(--acento);
+    outline-offset: 1px;
+  }
+  .linha-opcao:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .linha-opcao:has(input:disabled):hover {
+    background: none;
+  }
+  /* Caixa e bolinha desenhadas ao lado de um input escondido (padrão antigo, ainda usado). */
+  .caixa,
+  .bolinha {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border: 1.5px solid var(--borda-campo);
+    background: var(--campo);
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .caixa {
+    border-radius: 6px;
+  }
+  .bolinha {
+    border-radius: 999px;
+  }
+  input:checked + .caixa {
+    border-color: var(--acento);
+    background: var(--acento);
+    animation: pop 0.32s var(--ease-mola);
+  }
+  input:checked + .caixa::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--sobre-acento);
+    -webkit-mask: var(--marca-check) center / contain no-repeat;
+    mask: var(--marca-check) center / contain no-repeat;
+    animation: risca 0.28s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+  }
+  input:checked + .bolinha,
+  .cartao-opcao:has(input:checked) .bolinha {
+    border-color: var(--acento);
+  }
+  input:checked + .bolinha::after,
+  .cartao-opcao:has(input:checked) .bolinha::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--acento);
+    animation: pop 0.3s var(--ease-mola) backwards;
+  }
+  /* Etiqueta de escolha (poucas opções curtas, ex.: Fácil, Normal, Difícil). */
+  .pilula {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 6px 12px;
+    border: 1px solid var(--borda-forte);
+    border-radius: 10px;
+    background: var(--folha);
+    color: var(--texto-2);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s, transform 0.12s;
+  }
+  .pilula:hover {
+    border-color: color-mix(in oklab, var(--borda-forte), var(--tinta) 25%);
+    color: var(--tinta);
+  }
+  .pilula:active {
+    transform: scale(0.97);
+  }
+  .pilula[aria-pressed='true'],
+  .pilula[role='radio'][aria-checked='true'],
+  .pilula:has(input:checked) {
+    border-color: var(--acento);
+    background: var(--acento-suave);
+    color: var(--acento);
+  }
+  .pilula[aria-pressed='true']::before,
+  .pilula[role='radio'][aria-checked='true']::before,
+  .pilula:has(input:checked)::before {
+    content: '';
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    background: currentColor;
+    -webkit-mask: var(--marca-check) center / contain no-repeat;
+    mask: var(--marca-check) center / contain no-repeat;
+    animation: risca 0.28s cubic-bezier(0.65, 0, 0.35, 1) backwards;
+  }
+  .pilula:has(input:focus-visible) {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+  .pilula:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  /* Cartão de escolha (poucas opções com explicação). */
+  .cartao-opcao {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--borda-forte);
+    border-radius: 14px;
+    background: var(--folha);
+    color: var(--tinta);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s, transform 0.15s;
+  }
+  .cartao-opcao:hover {
+    border-color: color-mix(in oklab, var(--borda-forte), var(--tinta) 25%);
+  }
+  .cartao-opcao:has(input:checked) {
+    border-color: var(--acento);
+    background: var(--acento-suave);
+    box-shadow: inset 0 0 0 1px var(--acento);
+  }
+  .cartao-opcao:has(input:focus-visible) {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+  .cartao-opcao:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .so-leitor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* Texto editável no lugar (enunciado, alternativas): parece texto; com o mouse ganha fundo; no foco, borda azul. */
+  .texto-inline {
+    display: block;
+    width: calc(100% + 16px);
+    margin: 0 -8px;
+    padding: 5px 8px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    resize: none;
+    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.2s;
+  }
+  .texto-inline:hover {
+    background: var(--folha-2);
+  }
+  .texto-inline:focus {
+    outline: none;
+    border-color: var(--acento);
+    background: var(--folha);
+    box-shadow: 0 0 0 4px var(--acento-anel);
+  }
+  .texto-inline[data-vazio='true'] {
+    min-height: 2.3em;
+    background: var(--folha-2);
+    border-color: var(--borda);
+  }
+  .texto-inline[aria-invalid='true'] {
+    border-color: var(--erro-vivo);
+  }
+
+  /* Etiqueta pequena de situação: <span class="selo" data-tipo="ok">Pronto</span>. Sempre com texto. */
+  .selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: 8px;
+    background: var(--folha-2);
+    color: var(--texto-2);
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .selo[data-tipo='ok'] {
+    background: var(--ok-suave);
+    color: var(--ok);
+  }
+  .selo[data-tipo='erro'] {
+    background: var(--erro-suave);
+    color: var(--erro);
+  }
+  .selo[data-tipo='aviso'] {
+    background: var(--aviso-suave);
+    color: var(--aviso);
+  }
+  .selo[data-tipo='acento'] {
+    background: var(--acento-suave);
+    color: var(--acento);
+  }
+  .selo[data-tipo='energia'] {
+    background: var(--energia-suave);
+    color: var(--energia-texto);
+  }
+  .selo > .ponto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  /* Etiqueta "usa IA" / "sem IA". */
+  .marca-ia {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 7px;
+    background: var(--folha-2);
+    color: var(--texto-2);
+    font-size: 12px;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+  .marca-ia[data-ia='true'] {
+    background: var(--tinta);
+    color: var(--folha);
+  }
+
+  /* Barra de progresso: <div class="barra"><i :style="{ width }"/></div> */
+  .barra {
+    position: relative;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--folha-3);
+  }
+  .barra > i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--acento), var(--acento-2));
+    transition: width 0.9s var(--ease-saida);
+    animation: cresce-x 0.9s var(--ease-saida) backwards;
+    transform-origin: left center;
+  }
+  .barra[data-tipo='ok'] > i {
+    background: var(--ok-vivo);
+  }
+  .barra.fina {
+    height: 5px;
+  }
+
+  /* Esqueleto enquanto carrega (com o formato do conteúdo). */
+  .esqueleto {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--folha-2);
+  }
+  .esqueleto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--folha) 70%, transparent), transparent);
+    transform: translateX(-100%);
+    animation: brilho 1.4s ease-in-out infinite;
+  }
+
+  /* Dica que aparece ao passar o mouse ou focar: <button data-dica="Recolher o menu">. */
+  [data-dica] {
+    position: relative;
+  }
+  /* O texto só existe ao passar o mouse ou focar: escondido, ele ainda alargaria a página no celular. */
+  [data-dica]::after {
+    position: absolute;
+    z-index: 60;
+    top: 50%;
+    left: calc(100% + 10px);
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: var(--tinta);
+    color: var(--folha);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: var(--sombra-menu);
+    pointer-events: none;
+    transform: translate(0, -50%);
+  }
+  [data-dica][data-dica-lado='baixo']::after {
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+  [data-dica]:hover::after,
+  [data-dica]:focus-visible::after {
+    content: attr(data-dica);
+    animation: dica-entra 0.15s ease-out 0.35s both;
+  }
+  [data-dica][data-dica-lado='baixo']:hover::after,
+  [data-dica][data-dica-lado='baixo']:focus-visible::after {
+    animation-name: dica-entra-baixo;
+  }
+  /* Para botões perto da borda direita de um cartão: a dica abre para a esquerda e não é cortada. */
+  [data-dica][data-dica-lado='esquerda']::after {
+    left: auto;
+    right: calc(100% + 10px);
+  }
+  [data-dica][data-dica-lado='esquerda']:hover::after,
+  [data-dica][data-dica-lado='esquerda']:focus-visible::after {
+    animation-name: dica-entra-esquerda;
+  }
+
+  /* Código com cara de editor (questões de programação). */
+  .codigo {
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--codigo-fundo), #ffffff 12%);
+    border-radius: 14px;
+    background: var(--codigo-fundo);
+    color: var(--codigo-texto);
+  }
+  .codigo-topo {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 36px;
+    padding: 0 14px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.07);
+    color: rgb(227 232 247 / 0.55);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .codigo-topo > .luz {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.16);
+  }
+  .codigo pre {
+    margin: 0;
+    padding: 14px 16px 16px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.65;
+    tab-size: 4;
+    font-variant-ligatures: none;
+  }
+  .codigo .tk-chave {
+    color: #ff8fb8;
+  }
+  .codigo .tk-texto {
+    color: #a5e3a1;
+  }
+  .codigo .tk-numero {
+    color: #ffc27a;
+  }
+  .codigo .tk-comentario {
+    color: #7f8aa8;
+    font-style: italic;
+  }
+  .codigo .tk-funcao {
+    color: #8fb8ff;
+  }
+
+  /* ================= Janelas ================= */
+  .dialogo {
+    width: calc(100% - 32px);
+    max-width: 560px;
+    max-height: min(88dvh, 760px);
+    margin: auto;
+    padding: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--borda);
+    border-radius: 24px;
+    background: var(--folha);
+    color: var(--tinta);
+    box-shadow: var(--sombra-janela);
+  }
+  .dialogo[open] {
+    animation: janela-entra 0.32s var(--ease-saida) backwards;
+  }
+  .dialogo[data-fechando] {
+    animation: janela-sai 0.16s ease-in both;
+  }
+  .dialogo::backdrop {
+    background: var(--fundo-janela);
+    backdrop-filter: blur(3px);
+    animation: aparece 0.25s ease backwards;
+  }
+  .dialogo[data-fechando]::backdrop {
+    animation: some 0.16s ease both;
+  }
+  .dialogo.larga {
+    max-width: 760px;
+  }
+  body:has(.dialogo[open]) {
+    overflow: hidden;
+  }
+  /* No celular, a janela vira uma folha que sobe de baixo, com a alça para arrastar. */
+  @media (max-width: 639px) {
+    .dialogo.folha-de-baixo {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      max-height: 90dvh;
+      margin: auto 0 0;
+      border-bottom: 0;
+      border-radius: 24px 24px 0 0;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .dialogo.folha-de-baixo[open] {
+      animation: subir-folha 0.36s var(--ease-saida) backwards;
+    }
+    .dialogo.folha-de-baixo[data-fechando] {
+      animation: descer-folha 0.2s ease-in both;
+    }
+  }
+  /* Painel lateral (pedido para a IA): no computador ocupa a altura toda, à direita. */
+  @media (min-width: 640px) {
+    .dialogo.lateral {
+      width: min(720px, 100%);
+      max-width: none;
+      height: 100dvh;
+      max-height: none;
+      margin: 0 0 0 auto;
+      border-width: 0 0 0 1px;
+      border-radius: 24px 0 0 24px;
+    }
+    .dialogo.lateral[open] {
+      animation: entra-lateral 0.34s var(--ease-saida) backwards;
+    }
+  }
+
+  /* ================= Menus ================= */
+  .menu-acoes {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 40;
+    min-width: 232px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    background: var(--folha);
+    box-shadow: var(--sombra-menu);
+    transform-origin: top right;
+    animation: menu-entra 0.18s var(--ease-saida) backwards;
+  }
+  .item-acao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--tinta);
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 500;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.12s, color 0.12s;
+  }
+  .item-acao > svg {
+    flex-shrink: 0;
+    color: var(--texto-3);
+    transition: transform 0.2s var(--ease-mola), color 0.12s;
+  }
+  .item-acao:hover,
+  .item-acao:focus-visible {
+    outline: none;
+    background: var(--folha-2);
+  }
+  .item-acao:hover > svg {
+    color: var(--tinta);
+    transform: scale(1.12);
+  }
+  .item-acao.perigo {
+    color: var(--erro);
+    font-weight: 600;
+  }
+  .item-acao.perigo > svg {
+    color: var(--erro);
+  }
+  .item-acao.perigo:hover {
+    background: var(--erro-suave);
+  }
+  .item-acao:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .menu-acoes > li {
+    animation: aparece-desce 0.22s var(--ease-saida) backwards;
+  }
+  .menu-acoes > li:nth-child(2) { animation-delay: 0.02s; }
+  .menu-acoes > li:nth-child(3) { animation-delay: 0.04s; }
+  .menu-acoes > li:nth-child(4) { animation-delay: 0.06s; }
+  .menu-acoes > li:nth-child(5) { animation-delay: 0.08s; }
+  .menu-acoes > li:nth-child(6) { animation-delay: 0.1s; }
+  .menu-acoes > li:nth-child(n + 7) { animation-delay: 0.12s; }
+
+  /* Lista de escolha (Selecao.vue): botão + lista que abre por cima da página. */
+  .selecao-botao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 46px;
+    padding: 0 12px 0 14px;
+    border: 1px solid var(--borda-campo);
+    border-radius: 12px;
+    background: var(--campo);
+    color: var(--tinta);
+    font: inherit;
+    font-size: 15.5px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.2s, background-color 0.15s;
+  }
+  .selecao-botao:hover {
+    border-color: color-mix(in oklab, var(--borda-campo), var(--tinta) 35%);
+  }
+  .selecao-botao:focus-visible,
+  .selecao-botao[aria-expanded='true'] {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 4px var(--acento-anel);
+  }
+  .selecao-botao[aria-invalid='true'] {
+    border-color: var(--erro-vivo);
+  }
+  .selecao-botao:disabled {
+    background: var(--folha-2);
+    color: var(--texto-3);
+    cursor: not-allowed;
+  }
+  .selecao-botao .seta {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: var(--texto-3);
+    transition: transform 0.25s var(--ease-saida);
+  }
+  .selecao-botao[aria-expanded='true'] .seta {
+    transform: rotate(180deg);
+  }
+  /* Variante compacta para filtros: "Matéria: Todas". */
+  .selecao-botao.filtro-compacto {
+    width: auto;
+    height: 38px;
+    padding: 0 10px 0 12px;
+    border-color: var(--borda-forte);
+    border-radius: 11px;
+    background: var(--folha);
+    font-size: 14px;
+    font-weight: 600;
+    gap: 6px;
+  }
+  .selecao-botao.filtro-compacto .prefixo {
+    color: var(--texto-3);
+    font-weight: 500;
+  }
+  .selecao-botao.filtro-compacto[data-ativo='true'] {
+    border-color: color-mix(in oklab, var(--acento) 55%, var(--borda-forte));
+    background: var(--acento-suave);
+    color: var(--acento);
+  }
+  .selecao-lista {
+    position: fixed;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    max-height: 340px;
+    padding: 6px;
+    overflow: hidden;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    background: var(--folha);
+    box-shadow: var(--sombra-menu);
+    animation: menu-entra 0.18s var(--ease-saida) backwards;
+  }
+  .selecao-lista[data-acima] {
+    transform-origin: bottom left;
+  }
+  .selecao-lista > ul {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    overscroll-behavior: contain;
+  }
+  .selecao-opcao {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    color: var(--tinta);
+    font-size: 14.5px;
+    line-height: 1.3;
+    cursor: pointer;
+    user-select: none;
+    animation: aparece-desce 0.2s var(--ease-saida) backwards;
+  }
+  .selecao-opcao[data-ativa] {
+    background: var(--folha-2);
+  }
+  .selecao-opcao[aria-selected='true'] {
+    color: var(--acento);
+    font-weight: 600;
+  }
+  .selecao-opcao[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .selecao-opcao .descricao {
+    display: block;
+    margin-top: 2px;
+    color: var(--texto-3);
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .selecao-grupo {
+    padding: 10px 10px 4px;
+    color: var(--texto-3);
+    font-size: 12.5px;
+    font-weight: 650;
+  }
+  .ponto-cor {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Filtro antigo (pílula com select nativo dentro): mantido para telas que ainda não trocaram. */
+  .filtro {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 10px 0 12px;
+    border: 1px solid var(--borda-forte);
+    border-radius: 11px;
+    background: var(--folha);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .filtro select {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--tinta);
+    font: inherit;
+    cursor: pointer;
+  }
+  .filtro select:focus {
+    outline: none;
+  }
+  .filtro:has(select:focus-visible) {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+
+  /* ================= Casca do app ================= */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 13px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background: var(--folha);
+    color: var(--tinta);
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  /* Item do menu lateral: a tela atual tem fundo azul claro, texto azul e o ícone cheio. */
+  .item-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 42px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 12px;
+    color: var(--texto-2);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .item-menu > svg {
+    flex-shrink: 0;
+    transition: transform 0.25s var(--ease-mola);
+  }
+  .item-menu:hover {
+    color: var(--tinta);
+    background: var(--folha-2);
+  }
+  .item-menu:hover > svg:first-child {
+    transform: scale(1.1);
+  }
+  .item-menu[aria-current='page'] {
+    color: var(--acento);
+    background: var(--acento-suave);
+  }
+  /* Barra de baixo do celular. */
+  .item-barra {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--texto-3);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .item-barra .icone-barra {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 32px;
+    border-radius: 12px;
+    transition: background-color 0.2s, transform 0.25s var(--ease-mola);
+  }
+  .item-barra:active .icone-barra {
+    transform: scale(0.9);
+  }
+  .item-barra[aria-current='page'] {
+    color: var(--acento);
+  }
+  .item-barra[aria-current='page'] .icone-barra {
+    background: var(--acento-suave);
+  }
+  .linha-mais {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 0 12px;
+    border-radius: 12px;
+    color: var(--tinta);
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.15s;
+  }
+  .linha-mais:hover {
+    background: var(--folha-2);
+  }
+  .linha-mais[aria-current='page'] {
+    color: var(--acento);
+    background: var(--acento-suave);
+  }
+  /* "Pular para o conteúdo": invisível até receber o foco do teclado. */
+  .pular {
+    position: fixed;
+    top: 12px;
+    left: -9999px;
+    z-index: 90;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--botao);
+    color: var(--sobre-botao);
+    font-weight: 600;
+  }
+  .pular:focus {
+    left: 12px;
+  }
+  .cadeado {
+    animation: cadeado 0.9s ease 0.3s both;
+  }
+  /* Barra de ações presa embaixo (formulários longos e celular). */
+  .barra-acoes {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--borda);
+    background: color-mix(in oklab, var(--folha) 88%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  /* ================= Peças de telas antigas ================= */
+  .amostra-cor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--texto-3);
+    cursor: pointer;
+  }
+  .amostra-cor .bolinha {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    transition: box-shadow 0.2s, transform 0.25s var(--ease-mola);
+  }
+  .amostra-cor:hover .bolinha {
+    transform: scale(1.08);
+  }
+  .amostra-cor:has(input:checked) {
+    color: var(--tinta);
+  }
+  .amostra-cor:has(input:checked) .bolinha {
+    box-shadow: 0 0 0 3px var(--folha), 0 0 0 5px currentColor;
+    transform: scale(1.06);
+  }
+  .amostra-cor:has(input:checked) .bolinha::after {
+    display: none;
+  }
+  .amostra-cor:has(input:focus-visible) .bolinha {
+    outline: 2px solid var(--acento);
+    outline-offset: 6px;
+  }
+  .linha-assunto {
+    transition: background-color 0.2s;
+  }
+  .linha-assunto.arrastando {
+    position: relative;
+    z-index: 2;
+    border-radius: 12px;
+    background: var(--folha-2);
+    box-shadow: var(--sombra-menu);
+  }
+  .linha-assunto:target {
+    background: var(--acento-suave);
+  }
+  .acao-trecho {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 9px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--texto-2);
+    font: inherit;
+    cursor: pointer;
+  }
+  .acao-trecho:hover {
+    background: var(--folha-2);
+    color: var(--tinta);
+  }
+  @media (hover: hover) {
+    .trecho .barra-trecho {
+      opacity: 0.35;
+      transition: opacity 0.15s;
+    }
+    .trecho:hover .barra-trecho,
+    .trecho:focus-within .barra-trecho {
+      opacity: 1;
+    }
+  }
+  /* Abas antigas das telas de entrada (mantidas para não quebrar telas que ainda as usem). */
+  .aba {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 11px;
+    color: var(--texto-2);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .aba[aria-current] {
+    background: var(--folha);
+    color: var(--tinta);
+  }
+
+  /* ================= Movimento das peças ================= */
+  /* Cartões que entram em cascata ao abrir a tela: <div class="entra" style="--i: 2">. */
+  .entra {
+    animation: entra 0.55s var(--ease-saida) backwards;
+    animation-delay: calc(var(--i, 0) * 55ms + 80ms);
+  }
+  /* Cartão que inclina de leve com o mouse (diretiva v-inclinar). */
+  .inclina {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.35s var(--ease-saida), border-color 0.2s;
+    will-change: transform;
+  }
+  .inclina::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: 0;
+    border-radius: inherit;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--acento) 16%, transparent), transparent 60%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .inclina:hover::before {
+    opacity: 1;
+  }
+  .inclina > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ================= Animações ================= */
+.vira-enter-active {
+  animation: entra 0.4s var(--ease-saida) backwards;
+}
+.vira-leave-active {
+  animation: some 0.14s ease both;
+}
+.sobe {
+  animation: entra 0.45s var(--ease-saida) backwards;
+}
+.revela {
+  animation: revela 0.5s ease-out 0.05s backwards;
+}
+.gira {
+  animation: gira 0.8s linear infinite;
+}
+.aparece {
+  animation: aparece 0.35s ease backwards;
+}
+/* Transições de lista do Vue: <TransitionGroup name="lista"> */
+.lista-enter-active,
+.lista-leave-active {
+  transition: opacity 0.25s ease, transform 0.3s var(--ease-saida);
+}
+.lista-enter-from,
+.lista-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.lista-move {
+  transition: transform 0.3s var(--ease-saida);
+}
+.desliza-enter-active,
+.desliza-leave-active {
+  transition: opacity 0.22s ease, transform 0.28s var(--ease-saida);
+}
+.desliza-enter-from {
+  opacity: 0;
+  transform: translateX(14px);
+}
+.desliza-leave-to {
+  opacity: 0;
+  transform: translateX(-14px);
+}
+.abre-enter-active,
+.abre-leave-active {
+  display: grid;
+  transition: grid-template-rows 0.3s var(--ease-saida), opacity 0.25s ease;
+}
+.abre-enter-from,
+.abre-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.abre-enter-to,
+.abre-leave-from {
+  grid-template-rows: 1fr;
+}
+.abre-enter-active > *,
+.abre-leave-active > * {
+  overflow: hidden;
+}
+
+@keyframes flutua {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+/* Gráficos: linha que se desenha, ponto final que aparece depois, anel que enche, barra que cresce. */
+.linha-desenha {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: desenha 1.1s var(--ease-saida) 0.15s backwards;
+}
+.ponto-final {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pop 0.45s var(--ease-mola) 1.05s backwards;
+}
+.anel-enche {
+  animation: anel-enche 1.1s var(--ease-saida) 0.1s backwards;
+}
+.barra-cresce {
+  transform-origin: bottom center;
+  animation: cresce-y 0.7s var(--ease-saida) backwards;
+}
+@keyframes desenha {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes anel-enche {
+  from {
+    stroke-dasharray: 0 9999;
+  }
+}
+@keyframes entra {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes aparece {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes aparece-desce {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@keyframes some {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes revela-titulo {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+    transform: none;
+  }
+}
+@keyframes revela {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes risca {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.85);
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes estrela {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  45% {
+    transform: scale(1.45) rotate(25deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+@keyframes treme {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+@keyframes gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes brilho {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes cresce-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes cresce-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes menu-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes janela-entra {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes janela-sai {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+@keyframes subir-folha {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes descer-folha {
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes entra-lateral {
+  from {
+    transform: translateX(48px);
+    opacity: 0;
+  }
+}
+/* O cadeado balança uma vez, de leve. */
+@keyframes cadeado {
+  0%,
+  100% {
+    transform: none;
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  60% {
+    transform: rotate(7deg);
+  }
+}
+@keyframes sai-seta {
+  0% {
+    transform: none;
+  }
+  45% {
+    transform: translateX(4px);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes pulso {
+  0% {
+    box-shadow: 0 0 0 0 var(--acento-anel);
+  }
+  100% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+}
+
+/* Troca de tema em círculo (View Transitions). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* "Menos movimento": no sistema operacional ou escolhido no perfil (classe no <html>). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+:root.menos-movimento *,
+:root.menos-movimento *::before,
+:root.menos-movimento *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Botão da digital (mostrar a senha): uma linha passa por ela, como um leitor. */
+.digital {
+  overflow: hidden;
+}
+.digital::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--acento);
+  box-shadow: 0 0 8px var(--acento);
+  opacity: 0;
+}
+.digital[data-lendo]::before {
+  animation: le-digital 0.65s ease-in-out both;
+}
+@keyframes le-digital {
+  0% {
+    opacity: 0;
+    top: 4px;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    top: calc(100% - 6px);
+  }
+}
+
+/* Faixa de arrastar (zoom da foto, volume de questões). */
+input.faixa {
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+input.faixa::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--folha-3);
+}
+input.faixa::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--folha-3);
+}
+input.faixa::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border: 3px solid var(--folha);
+  border-radius: 50%;
+  background: var(--acento);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: transform 0.2s var(--ease-mola);
+}
+input.faixa::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--folha);
+  border-radius: 50%;
+  background: var(--acento);
+}
+input.faixa:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+input.faixa:focus-visible {
+  outline: none;
+}
+input.faixa:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--acento-anel);
+}
+
+/* Avisos que aparecem no canto (salvo, erro, desfazer). */
+.aviso-flutuante {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  width: min(380px, calc(100vw - 32px));
+  padding: 13px 14px;
+  border: 1px solid var(--borda);
+  border-radius: 16px;
+  background: var(--folha);
+  color: var(--tinta);
+  font-size: 14.5px;
+  line-height: 1.4;
+  box-shadow: var(--sombra-menu);
+  pointer-events: auto;
+}
+.avisos-enter-active {
+  transition: opacity 0.25s ease, transform 0.4s var(--ease-saida);
+}
+.avisos-leave-active {
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+.avisos-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+}
+.avisos-leave-to {
+  opacity: 0;
+  transform: translateX(24px);
+}
+.avisos-move {
+  transition: transform 0.3s var(--ease-saida);
+}
+
+/* Menu com o fundo do item atual deslizando (MenuLateral.vue): o item atual fica transparente por cima dele. */
+.menu-deslizante .item-menu[aria-current='page'],
+.menu-deslizante .item-menu[aria-current='page']:hover {
+  background: transparent;
+}
+
+/* Passeio do guia: o recorte acende a parte da tela; o resto escurece. */
+.holofote {
+  box-shadow: 0 0 0 3px var(--acento), 0 0 0 9999px rgb(6 10 20 / 0.58);
+  transition: top 0.45s var(--ease-saida), left 0.45s var(--ease-saida), width 0.45s var(--ease-saida), height 0.45s var(--ease-saida);
+}
+.balao-guia {
+  animation: janela-entra 0.35s var(--ease-saida) backwards;
+}
+
+@keyframes dica-entra {
+  from { opacity: 0; translate: -4px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes dica-entra-baixo {
+  from { opacity: 0; translate: 0 -4px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes dica-entra-esquerda {
+  from { opacity: 0; translate: 4px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* Cor do PGC escolhida no perfil (Aparência). O azul é o padrão. Cada paleta muda o tema todo, não só os botões:
+   fundo, folhas, bordas e textos ganham o tom da paleta (mesma claridade do azul, outro matiz), mais a segunda cor
+   (--acento-2, das mesclas) e as cores da logo. Gerado por script a partir dos tokens do azul; todas as combinações
+   de texto passam no contraste AA nos dois temas. */
+:root[data-paleta='turquesa'] {
+  --mesa: #f0f7f6;
+  --ponto: #d3e3e1;
+  --folha: #ffffff;
+  --folha-2: #eff6f5;
+  --folha-3: #e1edeb;
+  --tinta: #001a17;
+  --texto-2: #345b56;
+  --texto-3: #4b726e;
+  --borda: #dde9e7;
+  --borda-forte: #c6d7d5;
+  --borda-campo: #779894;
+  --campo: #ffffff;
+  --codigo-fundo: #001b19;
+  --acento: #0b766e;
+  --acento-forte: #075a54;
+  --acento-suave: #e2f5f2;
+  --acento-2: #6cbf3c;
+  --acento-anel: rgb(11 118 110 / 0.22);
+  --sobre-acento: #ffffff;
+  --logo-1: #064f4a;
+  --logo-2: #0b8f84;
+  --logo-3: #33c7a8;
+  --logo-4: #b5e86a;
+}
+:root.dark[data-paleta='turquesa'] {
+  --mesa: #011210;
+  --ponto: #052623;
+  --folha: #041c1a;
+  --folha-2: #062522;
+  --folha-3: #09302d;
+  --tinta: #e6f7f4;
+  --texto-2: #97bbb6;
+  --texto-3: #719a95;
+  --borda: #0e312e;
+  --borda-forte: #103f3b;
+  --borda-campo: #46726d;
+  --campo: #021917;
+  --codigo-fundo: #01100e;
+  --sobre-acento: #011210;
+  --acento: #3ccbbd;
+  --acento-forte: #1fa396;
+  --acento-suave: #10302e;
+  --acento-2: #a6e36b;
+  --acento-anel: rgb(60 203 189 / 0.28);
+  --logo-1: #13786f;
+  --logo-2: #1fb0a2;
+  --logo-3: #4fd8b8;
+  --logo-4: #c2f07e;
+}
+:root[data-paleta='violeta'] {
+  --mesa: #f5f4fa;
+  --ponto: #deddea;
+  --folha: #ffffff;
+  --folha-2: #f4f3f9;
+  --folha-3: #e9e9f2;
+  --tinta: #141125;
+  --texto-2: #524f6a;
+  --texto-3: #686682;
+  --borda: #e5e5ee;
+  --borda-forte: #d2d1df;
+  --borda-campo: #8f8da6;
+  --campo: #ffffff;
+  --codigo-fundo: #161326;
+  --acento: #6a3fd9;
+  --acento-forte: #5229c2;
+  --acento-suave: #efeaff;
+  --acento-2: #d0549e;
+  --acento-anel: rgb(106 63 217 / 0.22);
+  --sobre-acento: #ffffff;
+  --logo-1: #2b1585;
+  --logo-2: #6a3fd9;
+  --logo-3: #ad6cf0;
+  --logo-4: #f39bd2;
+}
+:root.dark[data-paleta='violeta'] {
+  --mesa: #0e0d19;
+  --ponto: #201d32;
+  --folha: #171525;
+  --folha-2: #1f1c30;
+  --folha-3: #29263e;
+  --tinta: #f2f1fe;
+  --texto-2: #b1afca;
+  --texto-3: #8f8dab;
+  --borda: #2a273e;
+  --borda-forte: #36324f;
+  --borda-campo: #676484;
+  --campo: #141221;
+  --codigo-fundo: #0c0b16;
+  --sobre-acento: #0e0d19;
+  --acento: #a68bfa;
+  --acento-forte: #7c5cf0;
+  --acento-suave: #251d40;
+  --acento-2: #f29ad7;
+  --acento-anel: rgb(166 139 250 / 0.28);
+  --logo-1: #5236d0;
+  --logo-2: #8a63ee;
+  --logo-3: #c28af6;
+  --logo-4: #f7b3de;
+}
+:root[data-paleta='magenta'] {
+  --mesa: #f9f3f5;
+  --ponto: #e9dadf;
+  --folha: #ffffff;
+  --folha-2: #f8f2f4;
+  --folha-3: #f2e7ea;
+  --tinta: #220c15;
+  --texto-2: #674854;
+  --texto-3: #7f5f6b;
+  --borda: #eee3e6;
+  --borda-forte: #deced3;
+  --borda-campo: #a48791;
+  --campo: #ffffff;
+  --codigo-fundo: #230e17;
+  --acento: #b8236f;
+  --acento-forte: #931a58;
+  --acento-suave: #fde8f1;
+  --acento-2: #ec7a3a;
+  --acento-anel: rgb(184 35 111 / 0.22);
+  --sobre-acento: #ffffff;
+  --logo-1: #5f0f3d;
+  --logo-2: #b8236f;
+  --logo-3: #ef5a8a;
+  --logo-4: #ffb067;
+}
+:root.dark[data-paleta='magenta'] {
+  --mesa: #180a0f;
+  --ponto: #2f1921;
+  --folha: #231118;
+  --folha-2: #2d1820;
+  --folha-3: #3a202a;
+  --tinta: #fdeef3;
+  --texto-2: #c8a9b3;
+  --texto-3: #a88692;
+  --borda: #3b222b;
+  --borda-forte: #4b2c38;
+  --borda-campo: #805d6a;
+  --campo: #1f0f15;
+  --codigo-fundo: #15080d;
+  --sobre-acento: #180a0f;
+  --acento: #f17ab6;
+  --acento-forte: #d9529a;
+  --acento-suave: #3a1729;
+  --acento-2: #ffab70;
+  --acento-anel: rgb(241 122 182 / 0.28);
+  --logo-1: #9a1f63;
+  --logo-2: #d63a86;
+  --logo-3: #f77aa0;
+  --logo-4: #ffc187;
+}
+:root[data-paleta='grafite'] {
+  --mesa: #f5f5f6;
+  --ponto: #dedfe0;
+  --folha: #ffffff;
+  --folha-2: #f4f4f5;
+  --folha-3: #e9eaeb;
+  --tinta: #131416;
+  --texto-2: #515356;
+  --texto-3: #686a6d;
+  --borda: #e5e6e7;
+  --borda-forte: #d2d3d4;
+  --borda-campo: #8f9093;
+  --campo: #ffffff;
+  --codigo-fundo: #151618;
+  --acento: #2c3448;
+  --acento-forte: #171d2b;
+  --acento-suave: #e8ebf2;
+  --acento-2: #7d89a6;
+  --acento-anel: rgb(44 52 72 / 0.22);
+  --sobre-acento: #ffffff;
+  --logo-1: #1b2232;
+  --logo-2: #3c4762;
+  --logo-3: #7d89a6;
+  --logo-4: #c6cee0;
+}
+:root.dark[data-paleta='grafite'] {
+  --mesa: #0e0f10;
+  --ponto: #1f2123;
+  --folha: #171819;
+  --folha-2: #1e1f22;
+  --folha-3: #282a2c;
+  --tinta: #f1f2f4;
+  --texto-2: #b1b2b5;
+  --texto-3: #8f9194;
+  --borda: #292b2d;
+  --borda-forte: #35373a;
+  --borda-campo: #67696c;
+  --campo: #131416;
+  --codigo-fundo: #0c0c0e;
+  --sobre-acento: #0e0f10;
+  --acento: #c5cde0;
+  --acento-forte: #9aa4bd;
+  --acento-suave: #232a3a;
+  --acento-2: #8d99b6;
+  --acento-anel: rgb(197 205 224 / 0.28);
+  --logo-1: #4a5674;
+  --logo-2: #6b7896;
+  --logo-3: #a1adca;
+  --logo-4: #dbe1ee;
+}
+
+/* ================= Contas (KaTeX) ================= */
+@layer components {
+  /* A conta acompanha o tamanho e a cor do texto em volta (o KaTeX, sozinho, desenha 21% maior). */
+  .conta .katex {
+    font-size: 1.06em;
+    white-space: nowrap;
+  }
+  .conta-bloco {
+    display: block;
+    margin: 0.4em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .conta-bloco .katex-display {
+    margin: 0;
+  }
+}
+
+/* ================= Superfícies que levantam ================= */
+/* Pedido do R: ao passar o mouse, a superfície sobe um pouquinho. Só com mouse (no toque não fica preso) e parado
+   com "menos movimento". Quem não deve subir (tela inteira, formulário) usa .sem-levantar. */
+@layer components {
+  .cartao,
+  .cartao-p,
+  .cartao-destaque,
+  .cartao-opcao,
+  .levanta {
+    transition: transform 0.22s var(--ease-saida), box-shadow 0.22s var(--ease-saida), border-color 0.2s;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    :root:not(.menos-movimento) :is(.cartao, .cartao-p, .cartao-destaque, .levanta):not(.sem-levantar):not(:focus-within):hover {
+      transform: translateY(-3px);
+      border-color: var(--borda-forte);
+      box-shadow: 0 14px 28px -18px color-mix(in oklab, var(--tinta) 38%, transparent);
+    }
+    :root:not(.menos-movimento) .cartao-opcao:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* ================= Revelar ao rolar (diretiva v-revelar) ================= */
+/* A peça abaixo da dobra espera fora da vista; ao entrar na tela, sobe 18 px e aparece. Os gráficos de dentro ficam
+   parados no primeiro quadro até lá, para crescerem quando a pessoa está olhando. */
+.a-revelar {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease-saida) var(--atraso, 0ms), transform 0.7s var(--ease-saida) var(--atraso, 0ms);
+}
+.a-revelar[data-revelar='esquerda'] {
+  transform: translateX(-32px);
+}
+.a-revelar[data-revelar='direita'] {
+  transform: translateX(32px);
+}
+.a-revelar[data-revelar='zoom'] {
+  transform: scale(0.92);
+}
+.a-revelar.revelado {
+  opacity: 1;
+  transform: none;
+}
+.a-revelar:not(.revelado) *,
+.a-revelar:not(.revelado) *::before,
+.a-revelar:not(.revelado) *::after {
+  animation-play-state: paused !important;
+}
+:root.menos-movimento .a-revelar {
+  opacity: 1;
+  transform: none;
+}
+@media print {
+  .a-revelar {
+    opacity: 1;
+    transform: none;
+  }
+}

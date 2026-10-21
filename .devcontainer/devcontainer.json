@@ -1,0 +1,26 @@
+{
+  // Codespace do PGC: Node 24, Docker (para o banco local do Supabase) e o gh (para abrir a porta do banco).
+  // Ao criar, instala os pacotes. Depois, no terminal: "npm run codespace:banco" e "npm run dev:local".
+  // Guia completo: docs/equipe/LEIA-PRIMEIRO.md
+  "name": "PGC",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "24" },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "hostRequirements": { "cpus": 2, "memory": "8gb" },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000, 54321, 54323, 54324],
+  "portsAttributes": {
+    "3000": { "label": "PGC (o app)", "onAutoForward": "openBrowser" },
+    "54321": { "label": "Banco local (API)", "onAutoForward": "silent" },
+    "54323": { "label": "Painel do banco (Studio)", "onAutoForward": "silent" },
+    "54324": { "label": "E-mails de teste", "onAutoForward": "silent" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["Vue.volar", "bradlc.vscode-tailwindcss"]
+    }
+  }
+}

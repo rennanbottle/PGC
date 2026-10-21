@@ -1,0 +1,23 @@
+# Gerados pelo Nuxt e pelo npm
+node_modules
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+coverage
+
+# Segredos: nunca vão para o Git
+.env
+.env.*
+!.env.example
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+*.log
+.idea
+.vscode/*
+!.vscode/extensions.json
+.env

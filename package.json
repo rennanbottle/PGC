@@ -1,0 +1,39 @@
+{
+  "name": "pgc",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "dev:local": "nuxt dev --dotenv .env.local",
+    "banco:iniciar": "npx --yes supabase@2 start",
+    "banco:env": "node scripts/banco-local.mjs",
+    "banco:parar": "npx --yes supabase@2 stop",
+    "banco:zerar": "npx --yes supabase@2 db reset",
+    "codespace:banco": "npx --yes supabase@2 start -x imgproxy,edge-runtime,logflare,vector,supavisor && gh codespace ports visibility 54321:public -c \"$CODESPACE_NAME\" && node scripts/banco-local.mjs",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "simular": "node scripts/simular-motor.js"
+  },
+  "dependencies": {
+    "@lucide/vue": "^1.51.0",
+    "@nuxtjs/color-mode": "^4.0.1",
+    "@nuxtjs/supabase": "^2.0.10",
+    "jszip": "^3.10.1",
+    "katex": "^0.16.11",
+    "mammoth": "^1.12.0",
+    "nuxt": "^4.5.2",
+    "nuxt-security": "^2.6.0",
+    "unpdf": "^1.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.0",
+    "vitest": "^5.0.3"
+  }
+}
